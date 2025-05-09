@@ -241,5 +241,13 @@ public class Mauritius extends World
         blueEgg2.setLocation(4,4);
         removeObject(blueEgg2);
         removeObject(blueEgg);
+        myDodo.setLocation(10,4);
+        Fence fence = new Fence();
+        addObject(fence,11,4);
+        myDodo.setLocation(10,4);
+        myDodo.climbOverFence();
+        myDodo.setLocation(2,4);
+        removeObject(fence);
+        myDodo.setLocation(4,5);
     }
 }

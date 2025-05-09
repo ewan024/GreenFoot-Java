@@ -1,4 +1,4 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 /**
  *
@@ -44,11 +44,7 @@ public class MyDodo extends Dodo
      *                      (an obstruction or end of world ahead)
      */
     public boolean canMove() {
-        if ( borderAhead() ){
-            return false;
-        } else {
-            return true;
-        }
+        return !(borderAhead() || fenceAhead());
     }
 
     /**
@@ -134,5 +130,37 @@ public class MyDodo extends Dodo
     public void turn180() {
         turnRight();
         turnRight();
+    }
+    
+    public void climbOverFence() {
+        if(fenceAhead() && !borderAhead()) {
+        turnLeft();
+        move();
+        turnRight();
+        move();
+        move();
+        turnRight();
+        move();
+        turnLeft();
+        }
+        else {
+            showError("Fence not here");
+        }
+    }
+    
+    public boolean grainAhead() {
+        move();
+        if (onGrain()) {
+            turn180();
+            move();
+            turn180();
+            return true;
+        }
+        else {
+            turn180();
+            move();
+            turn180();
+            return false;
+        }
     }
 }
