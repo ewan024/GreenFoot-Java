@@ -78,14 +78,25 @@ public class MyDodo extends Dodo
      * 
      * <p> Initial:   
      * <p> Final:  
-     * 
-     * @param   int distance: the number of steps made
+     * <p>
+     * param   int distance: the number of steps made
      */
     public void jump( int distance ) {
+        boolean negative = false;
+
+        if (distance < 0) {
+            negative = true;
+            distance *= -1;
+            turn180();
+        }
+
         for(int nrStepsTaken = 0; nrStepsTaken < distance; nrStepsTaken++) {
             move();
-            System.out.println((nrStepsTaken + 1) + " Steps taken");
-        }// increment the counter
+        }
+
+        if (negative) {
+            turn180();
+        }
     }
 
     
@@ -134,7 +145,7 @@ public class MyDodo extends Dodo
     
     public void climbOverFence() {
         if(fenceAhead() && !borderAhead()) {
-        turnLeft();
+        turnLeft(); 
         move();
         turnRight();
         move();
@@ -161,6 +172,16 @@ public class MyDodo extends Dodo
             move();
             turn180();
             return false;
+        }
+    }
+    
+    public void goToEgg() {
+        for (Egg egg: eggOnWorld()) {
+            jump(egg.getX() - getX());
+            turnRight();
+            jump(egg.getY() - getY());
+            turnLeft();
+            pickUpEgg();
         }
     }
 }
