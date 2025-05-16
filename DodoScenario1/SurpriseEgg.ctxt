@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=SurpriseEgg
+comment0.text=\r\n\ \r\n\ @author\ Sjaak\ Smetsers\ &\ Renske\ Smetsers-Weeda\r\n\ @version\ 3.0\ --\ 01-01-2017\r\n
+comment1.params=
+comment1.target=SurpriseEgg()
+comment2.params=size\ world
+comment2.target=java.util.List\ generateListOfSurpriseEggs(int,\ greenfoot.World)
+comment3.params=egg\ pos\ world
+comment3.target=void\ placeEgg(Egg,\ int,\ greenfoot.World)
+comment4.params=err_msg\ world
+comment4.target=void\ showError(java.lang.String,\ greenfoot.World)
+numComments=5
