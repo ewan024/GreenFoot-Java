@@ -178,7 +178,9 @@ public class MyDodo extends Dodo {
         jump(egg.getY() - getY());
         turnLeft();
         if (onEgg()) {
-            pickUpEgg();
+            Egg pickedEgg = pickUpEgg();
+            score += pickedEgg.getValue();
+
         }
     }
 
@@ -201,23 +203,26 @@ public class MyDodo extends Dodo {
             if (distance <= closestEgg) {
                 closestEgg = distance;
                 closest = egg;
-//                System.out.println(eggX + ", " + eggY);
+//              System.out.println(getEggValue());
             }
+
         }
 
         return closest;
     }
 
+    public void lowerScore() {
+        Mauritius world = getWorldOfType(Mauritius.class);
+            world.updateScore(score);
+    }
+ private int score =0;
     public void collectAllEggs() {
 
         Egg egg = nearestEgg();
-
-        while (egg != null) {
+        for (; Mauritius.STEPSLEFT > 0; Mauritius.STEPSLEFT--) {
             goToEgg(egg);
             egg = nearestEgg();
-            if (onEgg()) {
-                System.out.println(getEgg().getValue());
-            }
+            lowerScore();
         }
     }
 }

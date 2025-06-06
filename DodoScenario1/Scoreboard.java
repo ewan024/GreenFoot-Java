@@ -10,7 +10,7 @@ import java.awt.FontMetrics;
  * @version 2.0 -- 08-08-2015
  */
 
-public class Scoreboard  extends Actor
+public class Scoreboard extends Actor
 {
     private static final int SB_WIDTH = 120, SB_WIDTH2 = 250,
                              SB_HEIGHT = 30, BORDER_WIDTH = 3;

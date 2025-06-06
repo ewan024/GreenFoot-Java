@@ -84,6 +84,15 @@ public abstract class Dodo extends Actor {
         return getActor(Egg.class);
     }
 
+    public int getEggValue() {
+        return getEgg().getValue();
+    }
+
+    public List<Mauritius> world() { return getWorld().getObjects(Mauritius.class); }
+    public Mauritius getMauritius(){ return getWorldOfType(Mauritius.class);}
+
+    public List<Scoreboard> score() { return getWorld().getObjects(Scoreboard.class); }
+
     public Egg pickUpEgg() {
         Egg maybeEgg = getEgg();
         if (maybeEgg == null) {

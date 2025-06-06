@@ -21,9 +21,11 @@ public class Mauritius extends World
 
     private static final int MAXWIDTH = 12, MAXHEIGHT = 12, CELLSIZE = 60;
 
-    private Scoreboard theScoreboard = new Scoreboard ( "Moves left:", MAXSTEPS, "Score:", 0);
+    private Scoreboard theScoreboard = new Scoreboard ( "Moves left:", STEPSLEFT, "Score:", 0);
 
-    public static final int MAXSTEPS = 40;
+    public static int MAXSTEPS = 20;
+
+    public static int STEPSLEFT = MAXSTEPS;
 
     private static boolean traceOn = true;
 
@@ -66,8 +68,7 @@ public class Mauritius extends World
         setPaintOrder (Message.class, Scoreboard.class, Dodo.class, Grain.class,
             Nest.class, Egg.class, Fence.class);        
         populate();
-        // remove comment if you want to add a scoreboard
-        // addScoreboard();
+        addScoreboard();
         prepare();
     }
 
