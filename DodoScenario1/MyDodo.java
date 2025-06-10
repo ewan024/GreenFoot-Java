@@ -8,6 +8,8 @@ import java.util.List;
  */
 public class MyDodo extends Dodo {
     private int myNrOfEggsHatched;
+    private int score = 0;
+    private int steps = 0;
 
     public MyDodo() {
         super(EAST);
@@ -26,6 +28,8 @@ public class MyDodo extends Dodo {
     public void move() {
         if (canMove()) {
             step();
+            steps++;
+            lowerScore();
         } else {
             showError("I'm stuck!");
         }
@@ -43,7 +47,7 @@ public class MyDodo extends Dodo {
      * (an obstruction or end of world ahead)
      */
     public boolean canMove() {
-        return !(borderAhead() || fenceAhead());
+        return !(borderAhead() || fenceAhead()) && steps < Mauritius.MAXSTEPS;
     }
 
     /**
@@ -89,7 +93,7 @@ public class MyDodo extends Dodo {
             turn180();
         }
 
-        for (int nrStepsTaken = 0; nrStepsTaken < distance; nrStepsTaken++) {
+        for (int i = 0; i < distance; i++) {
             while (fenceAhead()) {
                 climbOverFence();
             }
@@ -178,51 +182,50 @@ public class MyDodo extends Dodo {
         jump(egg.getY() - getY());
         turnLeft();
         if (onEgg()) {
-            Egg pickedEgg = pickUpEgg();
-            score += pickedEgg.getValue();
-
+            score += egg.getValue();
+            pickUpEgg();
         }
     }
 
     public void printFenceLocation() {
-
-        for (Fence fence: fences()) {
+        for (Fence fence : fences()) {
             System.out.println(fence.getX() + ", " + fence.getY());
         }
     }
 
     public Egg nearestEgg() {
-        Egg closest = null;
-        int closestEgg = Integer.MAX_VALUE;
+        Egg closestEgg = null;
+        int closest = Integer.MAX_VALUE;
 
         for (Egg egg : eggOnWorld()) {
             int eggX = Math.abs(egg.getX() - getX());
             int eggY = Math.abs(egg.getY() - getY());
             int distance = eggX + eggY;
 
-            if (distance <= closestEgg) {
-                closestEgg = distance;
-                closest = egg;
+            if (distance <= closest) {
+                closest = distance;
+                closestEgg = egg;
 //              System.out.println(getEggValue());
             }
 
         }
 
-        return closest;
+        return closestEgg;
     }
 
     public void lowerScore() {
         Mauritius world = getWorldOfType(Mauritius.class);
-            world.updateScore(score);
-    }
- private int score =0;
-    public void collectAllEggs() {
 
+        world.updateScore(Mauritius.MAXSTEPS - steps, score);
+    }
+
+    public void collectAllEggs() {
         Egg egg = nearestEgg();
-        for (; Mauritius.STEPSLEFT > 0; Mauritius.STEPSLEFT--) {
+        steps = 0;
+        while (steps < Mauritius.MAXSTEPS && egg != null) {
             goToEgg(egg);
             egg = nearestEgg();
-            lowerScore();
         }
+        lowerScore();
     }
 }

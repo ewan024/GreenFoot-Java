@@ -10,18 +10,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Mauritius.
- * 
+ *
  * @author Sjaak Smetsers & Renske Smetsers-Weeda
  * @version 3.1 -- 29-07-2017
  */
-public class Mauritius extends World
-{
+public class Mauritius extends World {
     private static final String WORLD_NAME = "worldOneDodo.txt";
     private static File WORLD_FILE = null;
 
     private static final int MAXWIDTH = 12, MAXHEIGHT = 12, CELLSIZE = 60;
 
-    private Scoreboard theScoreboard = new Scoreboard ( "Moves left:", STEPSLEFT, "Score:", 0);
+    private Scoreboard theScoreboard = new Scoreboard("Moves left:", STEPSLEFT, "Score:", 0);
 
     public static int MAXSTEPS = 20;
 
@@ -30,43 +29,42 @@ public class Mauritius extends World
     private static boolean traceOn = true;
 
     private static final char
-    FENCE      = '#'            ,
-    EGG_YELLOW = '$'            ,
-    EGG_BLUE   = '.'            ,
-    NEST       = '='            ,
-    GRAIN      = '+'            ,
-    DODO_N     = 'N'            ,
-    DODO_S     = 'S'            ,
-    DODO_E     = 'E'            ,
-    DODO_W     = 'W'            ;
+            FENCE = '#',
+            EGG_YELLOW = '$',
+            EGG_BLUE = '.',
+            NEST = '=',
+            GRAIN = '+',
+            DODO_N = 'N',
+            DODO_S = 'S',
+            DODO_E = 'E',
+            DODO_W = 'W';
 
     private static WorldReader WORLD_READER = null;
     private static int WORLD_WIDTH, WORLD_HEIGHT;
 
     static {
-        if ( ! WORLD_NAME.isEmpty() ) {
-            WORLD_FILE   = new File ( WorldWriter.WORLD_PATH + WORLD_NAME );           
+        if (!WORLD_NAME.isEmpty()) {
+            WORLD_FILE = new File(WorldWriter.WORLD_PATH + WORLD_NAME);
             initWorldInfo();
         } else {
-            WORLD_WIDTH  = MAXWIDTH;
+            WORLD_WIDTH = MAXWIDTH;
             WORLD_HEIGHT = MAXHEIGHT;
-        }            
+        }
     }
 
     private static void initWorldInfo() {
-        WORLD_READER = new WorldReader ( WORLD_FILE );
-        WORLD_WIDTH  = WORLD_READER.getWorldWidth();
+        WORLD_READER = new WorldReader(WORLD_FILE);
+        WORLD_WIDTH = WORLD_READER.getWorldWidth();
         WORLD_HEIGHT = WORLD_READER.getWorldHeight();
     }
 
     /**
      * Constructor for objects of class ChickenWorld.
-     * 
      */
-    public Mauritius() {    
-        super(WORLD_WIDTH, WORLD_HEIGHT, CELLSIZE); 
-        setPaintOrder (Message.class, Scoreboard.class, Dodo.class, Grain.class,
-            Nest.class, Egg.class, Fence.class);        
+    public Mauritius() {
+        super(WORLD_WIDTH, WORLD_HEIGHT, CELLSIZE);
+        setPaintOrder(Message.class, Scoreboard.class, Dodo.class, Grain.class,
+                Nest.class, Egg.class, Fence.class);
         populate();
         addScoreboard();
         prepare();
@@ -85,92 +83,96 @@ public class Mauritius extends World
     }
 
     private void addScoreboard() {
-        addObject( theScoreboard, 2, getHeight()-1 );
+        addObject(theScoreboard, 2, getHeight() - 1);
     }
 
-    public void updateScore( int ... scores ){
-        theScoreboard.updateScore( scores );
+    public void updateScore(int... scores) {
+        theScoreboard.updateScore(scores);
     }
 
-    private Actor charToActor( char c ) {
+    private Actor charToActor(char c) {
         MyDodo newDodo;
-        switch ( c ) {
+        switch (c) {
             case FENCE:
                 return new Fence();
             case NEST:
                 return new Nest();
             case GRAIN:
-                return new Grain();                
+                return new Grain();
             case EGG_YELLOW:
                 return new GoldenEgg();
             case EGG_BLUE:
                 return new BlueEgg();
-            case DODO_N: 
+            case DODO_N:
                 newDodo = new MyDodo();
-                newDodo.setDirection( Dodo.NORTH );
+                newDodo.setDirection(Dodo.NORTH);
                 return newDodo;
             case DODO_S:
                 newDodo = new MyDodo();
-                newDodo.setDirection( Dodo.SOUTH );
+                newDodo.setDirection(Dodo.SOUTH);
                 return newDodo;
             case DODO_E:
                 newDodo = new MyDodo();
-                newDodo.setDirection( Dodo.EAST );
+                newDodo.setDirection(Dodo.EAST);
                 return newDodo;
             case DODO_W:
                 newDodo = new MyDodo();
-                newDodo.setDirection( Dodo.WEST );
+                newDodo.setDirection(Dodo.WEST);
                 return newDodo;
             default:
                 return null;
         }
     }
 
-    private void populate () {
-        if ( WORLD_FILE != null ) {
-            if ( WORLD_READER == null ) {
-                WORLD_READER = new WorldReader ( WORLD_FILE );
+    private void populate() {
+        if (WORLD_FILE != null) {
+            if (WORLD_READER == null) {
+                WORLD_READER = new WorldReader(WORLD_FILE);
             }
             try {
                 while (WORLD_READER.hasNext()) {
                     WorldReader.Cell next_cell = WORLD_READER.next();
-                    Actor actor = charToActor( next_cell.getChar() );
-                    if ( actor != null ) {
+                    Actor actor = charToActor(next_cell.getChar());
+                    if (actor != null) {
                         addObject(actor, next_cell.getX(), next_cell.getY());
                     }
                 }
                 WORLD_READER.close();
                 WORLD_READER = null;
-            } catch ( IOException ioe ) {
+            } catch (IOException ioe) {
             }
-        }            
+        }
     }
 
     private void removeAllActors() {
-        removeObjects( getObjects( null ) );
+        removeObjects(getObjects(null));
     }
 
-    private char getActorAt( int x, int y ){
+    private char getActorAt(int x, int y) {
         List<Actor> actors = getObjectsAt(x, y, null);
-        if ( actors.size() > 0 ) {
-            Actor actor = actors.get( 0 );
-            if ( actor instanceof MyDodo ) {
+        if (actors.size() > 0) {
+            Actor actor = actors.get(0);
+            if (actor instanceof MyDodo) {
                 MyDodo dodo = (MyDodo) actor;
-                switch ( dodo.getDirection() ) {
-                    case Dodo.NORTH: return DODO_N;
-                    case Dodo.SOUTH: return DODO_S;
-                    case Dodo.EAST:  return DODO_E;
-                    default:    return DODO_W;
+                switch (dodo.getDirection()) {
+                    case Dodo.NORTH:
+                        return DODO_N;
+                    case Dodo.SOUTH:
+                        return DODO_S;
+                    case Dodo.EAST:
+                        return DODO_E;
+                    default:
+                        return DODO_W;
                 }
-            } else if ( actor instanceof Fence ) {
+            } else if (actor instanceof Fence) {
                 return FENCE;
-            } else if ( actor instanceof GoldenEgg ) {
+            } else if (actor instanceof GoldenEgg) {
                 return EGG_YELLOW;
-            } else if ( actor instanceof BlueEgg ) {
+            } else if (actor instanceof BlueEgg) {
                 return EGG_BLUE;
-            } else if ( actor instanceof Nest ) {
+            } else if (actor instanceof Nest) {
                 return NEST;
-            } else if ( actor instanceof Grain ) {
+            } else if (actor instanceof Grain) {
                 return GRAIN;
             } else {
                 return ' ';
@@ -181,41 +183,41 @@ public class Mauritius extends World
     }
 
     public void saveToFile() {
-        WorldWriter writer = new WorldWriter ( "saved.txt" );
+        WorldWriter writer = new WorldWriter("saved.txt");
         try {
-            writer.write( String.format("%d %d\n", WORLD_WIDTH, WORLD_HEIGHT) );
-            for ( int y = 0; y < WORLD_HEIGHT; y++ ) {
-                for ( int x = 0; x < WORLD_WIDTH; x++ ) {
-                    writer.write( getActorAt( x, y ) );
+            writer.write(String.format("%d %d\n", WORLD_WIDTH, WORLD_HEIGHT));
+            for (int y = 0; y < WORLD_HEIGHT; y++) {
+                for (int x = 0; x < WORLD_WIDTH; x++) {
+                    writer.write(getActorAt(x, y));
                 }
-                writer.write( '\n' );
+                writer.write('\n');
             }
             writer.close();
-        } catch ( IOException ioe ) {
+        } catch (IOException ioe) {
         }
     }
 
     public void populateFromFile() {
-        File world_files = new File ( WorldWriter.WORLD_PATH );
-        JFileChooser chooser = new JFileChooser( world_files );
-        FileNameExtensionFilter filter = new FileNameExtensionFilter( "Plain text files", "txt" );
+        File world_files = new File(WorldWriter.WORLD_PATH);
+        JFileChooser chooser = new JFileChooser(world_files);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Plain text files", "txt");
         chooser.setFileFilter(filter);
-        int returnVal = chooser.showOpenDialog( null );
-        if ( returnVal == JFileChooser.APPROVE_OPTION ) {
+        int returnVal = chooser.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
             WORLD_FILE = chooser.getSelectedFile();
             initWorldInfo();
-            Greenfoot.setWorld( new Mauritius () );
+            Greenfoot.setWorld(new Mauritius());
         }
     }
 
-    public static boolean checkCellContent( Actor actor, int x, int y, Class... forbiddenClasses) {
+    public static boolean checkCellContent(Actor actor, int x, int y, Class... forbiddenClasses) {
         World world = actor.getWorld();
-        List<Actor> allActorsInCell = world.getObjectsAt( x, y, Actor.class );
-        allActorsInCell.remove( actor );        
-        for ( Actor otherActor: allActorsInCell ) {
-            for ( Class forbidden: forbiddenClasses ){
-                if ( forbidden.isInstance( otherActor ) ) {
-                    showError( world, " cell already occupied " );
+        List<Actor> allActorsInCell = world.getObjectsAt(x, y, Actor.class);
+        allActorsInCell.remove(actor);
+        for (Actor otherActor : allActorsInCell) {
+            for (Class forbidden : forbiddenClasses) {
+                if (forbidden.isInstance(otherActor)) {
+                    showError(world, " cell already occupied ");
                     return false;
                 }
             }
@@ -223,21 +225,20 @@ public class Mauritius extends World
         return true;
     }
 
-    private static void showError( World world, String err_msg ) {
-        Message.showMessage(  new Alert (err_msg), world );
+    private static void showError(World world, String err_msg) {
+        Message.showMessage(new Alert(err_msg), world);
     }
 
     /**
      * Prepare the world for the start of the program.
      * That is: create the initial objects and add them to the world.
      */
-    private void prepare()
-    {
+    private void prepare() {
         BlueEgg blueEgg = new BlueEgg();
-        addObject(blueEgg,4,5);
+        addObject(blueEgg, 4, 5);
         BlueEgg blueEgg2 = new BlueEgg();
-        addObject(blueEgg2,6,2);
+        addObject(blueEgg2, 6, 2);
         BlueEgg blueEgg3 = new BlueEgg();
-        addObject(blueEgg3,8,7);
+        addObject(blueEgg3, 8, 7);
     }
 }
