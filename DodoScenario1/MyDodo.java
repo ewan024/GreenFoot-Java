@@ -141,10 +141,25 @@ public class MyDodo extends Dodo {
         }
     }
 
+    /**
+     * Makes the Dodo turn 180 degrees to the right.
+     *
+     * <p> Initial: Dodo is facing any direction
+     * <p> Final:   Dodo is now facing the opposite direction of initial situation
+     */
+
     public void turn180() {
         turnRight();
         turnRight();
     }
+
+    /**
+     * Makes the Dodo climb over a fence.
+     * (if there is one)
+     *
+     * <p> Initial: Dodo is standing in front of a fence
+     * <p> Final:   Dodo is on the other side of the fence
+     */
 
     public void climbOverFence() {
         if (fenceAhead() && !borderAhead()) {
@@ -161,6 +176,16 @@ public class MyDodo extends Dodo {
         }
     }
 
+    /**
+     * Test if the Dodo has a grain ahead.
+     *
+     * <p> Initial: Dodo is somewhere on the world
+     * <p> Final:   Same as initial situation
+     *
+     * @return boolean true if there is a grain in front
+     * false if there is no grain in front
+     */
+
     public boolean grainAhead() {
         move();
         if (onGrain()) {
@@ -176,6 +201,15 @@ public class MyDodo extends Dodo {
         }
     }
 
+    /**
+     * Makes the Dodo move towards an egg. (and picks it up)
+     *
+     * <p> Initial: Dodo is somewhere on the world
+     * <p> Final:   Dodo has moved to the given egg (and picks that egg up, updating the scoreboard)
+     *
+     * @param Egg egg = an egg on the world
+     */
+
     public void goToEgg(Egg egg) {
         jump(egg.getX() - getX());
         turnRight();
@@ -187,11 +221,27 @@ public class MyDodo extends Dodo {
         }
     }
 
+    /**
+     * Prints out the coordinates of all the fences on the world.
+     *
+     * <p> Initial: Dodo and fences are somewhere on the world
+     * <p> Final:   Same as initial situation
+     */
+
     public void printFenceLocation() {
         for (Fence fence : fences()) {
             System.out.println(fence.getX() + ", " + fence.getY());
         }
     }
+
+    /**
+     * Finds the nearest egg to the Dodo.
+     *
+     * <p> Initial: Dodo and eggs are somewhere on the world
+     * <p> Final:   Same as initial situation
+     *
+     * @return Egg = the closest egg to the Dodo
+     */
 
     public Egg nearestEgg() {
         Egg closestEgg = null;
@@ -213,11 +263,25 @@ public class MyDodo extends Dodo {
         return closestEgg;
     }
 
+    /**
+     * The steps the Dodo has taken and the score of Eggs will get updated. (if possible)
+     *
+     * <p> Initial: Dodo (and eggs) is somewhere on the world
+     * <p> Final:   Same as initial situation
+     */
+
     public void lowerScore() {
         Mauritius world = getWorldOfType(Mauritius.class);
 
         world.updateScore(Mauritius.MAXSTEPS - steps, score);
     }
+
+    /**
+     * The Dodo will move and collect all the Eggs until its steps run out
+     *
+     * <p> Initial: Dodo (and eggs) is somewhere on the world
+     * <p> Final:   Dodo will have moved and picked up eggs on the way
+     */
 
     public void collectAllEggs() {
         Egg egg = nearestEgg();
