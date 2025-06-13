@@ -285,11 +285,11 @@ public class MyDodo extends Dodo {
 
     public void collectAllEggs() {
         Egg egg = nearestEgg();
-        steps = 0;
         while (steps < Mauritius.MAXSTEPS && egg != null) {
             goToEgg(egg);
             egg = nearestEgg();
         }
+        showError("I'm stuck!");
         lowerScore();
     }
 }

@@ -24,7 +24,7 @@ public abstract class Egg extends Actor
     }
 
     public void setLocation( int x, int y ){
-        if ( Mauritius.checkCellContent ( this, x, y, Egg.class, Fence.class ) ){
+        if (Mauritius.checkCellContent ( this, x, y, Egg.class, Fence.class )){
             super.setLocation( x, y );
         }
     }
